@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার প্রোফাইল | Course Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background: #f0f2f5; color: #1c1e21; }
+
+        /* হেডার */
+        .header {
+            background: #2563eb;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .back-btn { text-decoration: none; color: white; font-size: 24px; }
+
+        .container { padding: 20px; display: flex; flex-direction: column; align-items: center; }
+
+        /* প্রোফাইল কার্ড */
+        .profile-card {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 30px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        /* ছবি পরিবর্তনের সেকশন */
+        .avatar-area {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+        #profileImage {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #2563eb;
+            background: #e4e6eb;
+        }
+        .upload-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #2563eb;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 3px solid white;
+            font-size: 18px;
+        }
+        #fileInput { display: none; }
+
+        /* ইনপুট ফিল্ড ডিজাইন */
+        .input-group { text-align: left; margin-bottom: 15px; }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            margin-left: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2563eb;
+        }
+        input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 15px;
+            border: 1.5px solid #e4e6eb;
+            background: #f8fafc;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { border-color: #2563eb; background: white; }
+        input:disabled { color: #888; cursor: not-allowed; }
+
+        /* সেভ বাটন */
+        .save-btn {
+            width: 100%;
+            padding: 16px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(37,99,235,0.3);
+            margin-top: 10px;
+        }
+        .save-btn:active { transform: scale(0.98); }
+
+        #statusMsg { margin-top: 15px; font-size: 14px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="home.html" class="back-btn">←</a>
+        <h2 style="font-size: 18px;">প্রোফাইল সেটিংস</h2>
+    </div>
+
+    <div class="container">
+        <div class="profile-card">
+            
+            <div class="avatar-area">
+                <img id="profileImage" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Avatar">
+                <label for="fileInput" class="upload-icon">📷</label>
+                <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)">
+            </div>
+
+            <h3 id="userNameTop" style="margin-bottom: 25px;">আপনার প্রোফাইল</h3>
+
+            <div class="input-group">
+                <label>সম্পূর্ণ নাম</label>
+                <input type="text" id="pName" placeholder="আপনার নাম লিখুন">
+            </div>
+
+            <div class="input-group">
+                <label>ইমেইল এড্রেস</label>
+                <input type="email" id="pEmail" placeholder="example@mail.com">
+            </div>
+
+            <div class="input-group">
+                <label>মোবাইল নম্বর (পরিবর্তনযোগ্য নয়)</label>
+                <input type="text" id="pPhone" disabled>
+            </div>
+
+            <button class="save-btn" id="saveBtn" onclick="saveToGoogleSheet()">তথ্য সেভ করুন</button>
+            <p id="statusMsg"></p>
+
+        </div>
+    </div>
+
+    <script>
+        // আপনার গুগল অ্যাপস স্ক্রিপ্ট ইউআরএল এখানে বসান
+        const scriptURL = 'আপনার_গুগল_অ্যাপ_স্ক্রিপ্ট_ইউআরএল_এখানে_বসান';
+
+        window.onload = function() {
+            const savedPhone = localStorage.getItem('userPhone');
+            if(!savedPhone) {
+                location.replace('index.html');
+                return;
+            }
+
+            // আগের ডাটা লোড করা
+            document.getElementById('pPhone').value = savedPhone;
+            if(localStorage.getItem('userName')) {
+                document.getElementById('pName').value = localStorage.getItem('userName');
+                document.getElementById('userNameTop').innerText = localStorage.getItem('userName');
+            }
+            if(localStorage.getItem('userEmail')) {
+                document.getElementById('pEmail').value = localStorage.getItem('userEmail');
+            }
+            if(localStorage.getItem('userPic')) {
+                document.getElementById('profileImage').src = localStorage.getItem('userPic');
+            }
+        };
+
+        // ছবি প্রিভিউ এবং লোকাল স্টোরেজে সেভ
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('profileImage');
+                output.src = reader.result;
+                localStorage.setItem('userPic', reader.result); // ছবি সেভ রাখা
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // গুগল শিটে ডাটা পাঠানো
+        function saveToGoogleSheet() {
+            const name = document.getElementById('pName').value;
+            const email = document.getElementById('pEmail').value;
+            const phone = localStorage.getItem('userPhone');
+            const btn = document.getElementById('saveBtn');
+            const status = document.getElementById('statusMsg');
+
+            if(!name || !email) {
+                alert("দয়া করে নাম এবং ইমেইল দুটোই পূরণ করুন।");
+                return;
+            }
+
+            btn.innerText = "প্রসেসিং...";
+            btn.disabled = true;
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                body: JSON.stringify({
+                    phone: phone,
+                    name: name,
+                    email: email
+                })
+            }).then(() => {
+                // সাকসেস হলে লোকাল ডাটা আপডেট
+                localStorage.setItem('userName', name);
+                localStorage.setItem('userEmail', email);
+                document.getElementById('userNameTop').innerText = name;
+                
+                status.innerText = "✅ তথ্য সফলভাবে গুগল শিটে জমা হয়েছে!";
+                status.style.color = "green";
+                btn.innerText = "তথ্য সেভ করুন";
+                btn.disabled = false;
+            }).catch(error => {
+                status.innerText = "❌ সমস্যা হয়েছে, আবার চেষ্টা করুন।";
+                status.style.color = "red";
+                btn.disabled = false;
+                btn.innerText = "তথ্য সেভ করুন";
+            });
+        }
+    </script>
+</body>
+</html>
