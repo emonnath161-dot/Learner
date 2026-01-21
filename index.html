@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রবেশ করুন | Course Pro</title>
+    
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        .icon {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: float 10s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); }
+            100% { transform: translateY(-10vh) rotate(360deg); }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 2px solid #fff;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-box {
+            width: 80px;
+            height: 80px;
+            background: #2563eb;
+            color: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+        }
+
+        h1 { font-size: 26px; color: #1e293b; margin-bottom: 10px; }
+        p { color: #64748b; margin-bottom: 30px; font-size: 15px; }
+
+        .input-group { text-align: left; margin-bottom: 25px; }
+        .input-group label { display: block; margin-left: 10px; margin-bottom: 5px; color: #2563eb; font-weight: bold; font-size: 13px; }
+        
+        input {
+            width: 100%;
+            padding: 18px;
+            border-radius: 20px;
+            border: 2px solid #f1f5f9;
+            background: #f8fafc;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: #2563eb; background: #fff; }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:active { transform: scale(0.96); }
+
+        /* কাস্টম অ্যালার্ট */
+        #custom-alert {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-align: center;
+            border-bottom: 5px solid #2563eb;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { top: -100px; opacity: 0; }
+            to { top: 20px; opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3" preload="auto"></audio>
+
+    <div class="bg-animation" id="bgIcons"></div>
+
+    <div id="custom-alert">
+        <div id="alert-icon" style="font-size: 30px; margin-bottom: 10px;"></div>
+        <div id="alert-text" style="font-weight: bold; color: #1e293b;"></div>
+    </div>
+
+    <div class="glass-card">
+        <div class="logo-box">L</div>
+        <h1>সুস্বাগতম!</h1>
+        <p>প্রবেশ করতে আপনার ১১ ডিজিটের মোবাইল নম্বর দিন</p>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <label>মোবাইল নম্বর</label>
+                <input type="number" id="userPhone" placeholder="01XXXXXXXXX" required>
+            </div>
+
+            <button type="submit">প্রবেশ করুন</button>
+        </form>
+    </div>
+
+    <script>
+        // ব্যাকগ্রাউন্ড এনিমেশন
+        const bg = document.getElementById('bgIcons');
+        const icons = ['📚', '💻', '🎓', '🚀', '✏️', '📱'];
+        for(let i=0; i<20; i++) {
+            const span = document.createElement('span');
+            span.className = 'icon';
+            span.innerText = icons[Math.floor(Math.random()*icons.length)];
+            span.style.left = Math.random()*100 + 'vw';
+            span.style.animationDuration = (Math.random()*5 + 7) + 's';
+            span.style.animationDelay = Math.random()*5 + 's';
+            bg.appendChild(span);
+        }
+
+        // অ্যালার্ট ফাংশন এবং সাউন্ড প্লে
+        function showAlert(msg, type) {
+            const box = document.getElementById('custom-alert');
+            const txt = document.getElementById('alert-text');
+            const icon = document.getElementById('alert-icon');
+            const sound = document.getElementById('notifSound');
+            
+            // সাউন্ড প্লে করা
+            if (sound) {
+                sound.currentTime = 0; // শুরু থেকে প্লে হবে
+                sound.play().catch(error => console.log("সাউন্ড প্লে হতে বাধা পেয়েছে:", error));
+            }
+
+            box.style.display = 'block';
+            txt.innerText = msg;
+            
+            if(type === 'success') {
+                icon.innerText = '✅';
+                box.style.borderBottomColor = '#22c55e';
+            } else {
+                icon.innerText = '❌';
+                box.style.borderBottomColor = '#ef4444';
+            }
+
+            setTimeout(() => { box.style.display = 'none'; }, 3500);
+        }
+
+        // ফর্ম হ্যান্ডলিং
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const phone = document.getElementById('userPhone').value;
+
+            if(phone.length !== 11) {
+                showAlert('দুঃখিত! সঠিক ১১ ডিজিটের নম্বর দিন।', 'error');
+            } else {
+                showAlert('সফলভাবে লগইন হয়েছে! হোম পেজে নিয়ে যাওয়া হচ্ছে...', 'success');
+                localStorage.setItem('userPhone', phone);
+                
+                setTimeout(() => {
+                    window.location.replace('home.html');
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>
