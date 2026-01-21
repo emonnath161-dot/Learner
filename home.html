@@ -2,112 +2,179 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>হোম | Course Pro</title>
-    
     <style>
-        /* ফন্ট সমস্যা চিরতরে সমাধানের জন্য ইন-লাইন সিএসএস */
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif !important;
-        }
-
-        body { background-color: #f8fafc; color: #1e293b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #f4f7fa; padding-bottom: 50px; }
 
         /* হেডার */
-        header { background: #fff; padding: 15px; text-align: center; border-bottom: 2px solid #e2e8f0; }
-        .logo { width: 50px; height: 50px; background: #2563eb; color: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; margin: 0 auto 5px; }
+        header {
+            background: #ffffff;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-box {
+            width: 40px; height: 40px; background: #2563eb; color: white;
+            border-radius: 10px; display: flex; align-items: center;
+            justify-content: center; font-size: 22px; font-weight: bold;
+        }
+        .logo-text { font-size: 18px; font-weight: bold; color: #333; }
+        .profile-btn {
+            width: 40px; height: 40px; background: #e2e8f0;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 20px; cursor: pointer;
+            border: 2px solid #2563eb; color: #2563eb;
+        }
 
-        /* ব্যানার স্লাইডার (১৬:৯) */
-        .banner-box { width: 92%; max-width: 450px; margin: 15px auto; aspect-ratio: 16/9; overflow: hidden; border-radius: 18px; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .banner-row { display: flex; transition: transform 0.5s ease; height: 100%; }
-        .banner-row img { min-width: 100%; height: 100%; object-fit: cover; background: #cbd5e1; }
+        /* টপ ব্যানার স্লাইডার */
+        .banner-box { width: 95%; max-width: 500px; margin: 15px auto; aspect-ratio: 16/9; overflow: hidden; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .banner-row { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
+        .banner-row img { min-width: 100%; height: 100%; object-fit: cover; }
 
-        /* টেক্সট স্লাইডার */
-        .marquee { background: #2563eb; color: #fff; padding: 10px 0; overflow: hidden; white-space: nowrap; font-weight: bold; }
-        .marquee-inner { display: inline-block; animation: scroll 15s linear infinite; }
+        /* নোটিশ স্লাইডার */
+        .marquee { background: #2563eb; color: white; padding: 10px 0; overflow: hidden; white-space: nowrap; font-weight: bold; }
+        .marquee-inner { display: inline-block; animation: scroll 20s linear infinite; }
         @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
 
-        /* ক্যাটাগরি মেনু (হরাইজন্টাল স্ক্রল) */
+        /* ক্যাটাগরি মেনু (১০টি) */
         .cat-menu { display: flex; overflow-x: auto; padding: 15px; gap: 10px; scrollbar-width: none; }
         .cat-menu::-webkit-scrollbar { display: none; }
-        .cat-item { background: #fff; padding: 8px 18px; border-radius: 50px; border: 1.5px solid #2563eb; color: #2563eb; font-weight: bold; font-size: 14px; white-space: nowrap; transition: 0.3s; }
-        .cat-item:active { background: #2563eb; color: #fff; transform: scale(0.9); }
+        .cat-item { background: #fff; padding: 10px 20px; border-radius: 50px; border: 1.5px solid #2563eb; color: #2563eb; font-weight: bold; font-size: 14px; white-space: nowrap; cursor: pointer; }
 
-        /* ফ্রি কোর্স অটো স্লাইডার */
+        /* ফ্রি কোর্স ৫টি স্লাইডার (ব্যানার, প্রাইস, বাটন সহ) */
         .free-wrap { padding: 15px; }
-        .sec-title { font-size: 19px; font-weight: bold; margin-bottom: 12px; border-left: 5px solid #2563eb; padding-left: 10px; }
-        .free-slider-box { width: 100%; overflow: hidden; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
-        .free-slides { display: flex; transition: transform 0.6s ease; }
-        .course-card { min-width: 100%; background: #fff; }
+        .sec-title { font-size: 19px; font-weight: bold; margin-bottom: 15px; border-left: 5px solid #2563eb; padding-left: 10px; }
+        
+        .free-slider-box { width: 100%; overflow: hidden; border-radius: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); background: white; }
+        .free-slides { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* প্রতিটি স্লাইড কার্ড */
+        .course-card { min-width: 100%; background: #fff; display: flex; flex-direction: column; }
         .course-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
-        .course-body { padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .enroll-btn { background: #2563eb; color: #fff; padding: 10px 22px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 14px; }
+        
+        .course-body { padding: 18px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; }
+        .course-details h3 { font-size: 16px; color: #1e293b; margin-bottom: 4px; }
+        .price { color: #2563eb; font-weight: bold; font-size: 18px; }
+        
+        .enroll-btn { 
+            background: #2563eb; color: white; padding: 10px 22px; 
+            border-radius: 12px; text-decoration: none; font-weight: bold; 
+            font-size: 14px; box-shadow: 0 4px 8px rgba(37,99,235,0.2); 
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">L</div>
-        <h2 style="font-size: 20px;">COURSE NAME <span style="color:#2563eb">PRO</span></h2>
+        <div class="logo-area">
+            <div class="logo-box">L</div>
+            <div class="logo-text">COURSE <span style="color:#2563eb">PRO</span></div>
+        </div>
+        <div class="profile-btn" onclick="location.href='profile.html'">👤</div>
     </header>
 
     <div class="banner-box">
         <div class="banner-row" id="topSlider">
-            <img src="https://via.placeholder.com/800x450/2563eb/fff?text=Special+Offer+1">
-            <img src="https://via.placeholder.com/800x450/1e40af/fff?text=Special+Offer+2">
-            <img src="https://via.placeholder.com/800x450/3b82f6/fff?text=Special+Offer+3">
+            <img src="https://via.placeholder.com/800x450/2563eb/fff?text=Offer+Banner+1">
+            <img src="https://via.placeholder.com/800x450/1e40af/fff?text=Offer+Banner+2">
+            <img src="https://via.placeholder.com/800x450/3b82f6/fff?text=Offer+Banner+3">
         </div>
     </div>
 
     <div class="marquee">
-        <div class="marquee-inner">🔥 আমাদের প্রিমিয়াম কোর্সগুলোতে বিশাল ছাড় চলছে! ক্যাটাগরি অনুযায়ী পছন্দের কোর্স বেছে নিন।</div>
+        <div class="marquee-inner">🔥 কোর্স প্রো-তে আপনাকে স্বাগতম! আমাদের ফ্রি কোর্সগুলোতে জয়েন করতে এনরোল বাটনে ক্লিক করুন।</div>
     </div>
 
     <div class="cat-menu">
-        <div class="cat-item" onclick="nav('graphics')">🎨 গ্রাফিক্স</div>
-        <div class="cat-item" onclick="nav('marketing')">🚀 মার্কেটিং</div>
-        <div class="cat-item" onclick="nav('hacking')">🛡️ হ্যাকিং</div>
-        <div class="cat-item" onclick="nav('video')">🎬 এডিটিং</div>
-        <div class="cat-item" onclick="nav('english')">🗣️ ইংলিশ</div>
+        <div class="cat-item" onclick="nav('graphics')">🎨 গ্রাফিক্স ডিজাইন</div>
+        <div class="cat-item" onclick="nav('marketing')">🚀 ডিজিটাল মার্কেটিং</div>
+        <div class="cat-item" onclick="nav('video')">🎬 ভিডিও এডিটিং</div>
+        <div class="cat-item" onclick="nav('hacking')">🛡️ ইথিকেল হ্যাকিং</div>
+        <div class="cat-item" onclick="nav('photoshop')">📸 ফটোশপ</div>
+        <div class="cat-item" onclick="nav('english')">🗣️ স্পোকেন ইংলিশ</div>
+        <div class="cat-item" onclick="nav('word')">📄 মাইক্রোসফট ওয়ার্ড</div>
+        <div class="cat-item" onclick="nav('excel')">📊 মাইক্রোসফট এক্সেল</div>
+        <div class="cat-item" onclick="nav('data')">⌨️ ডাটা এন্ট্রি</div>
         <div class="cat-item" onclick="nav('freelancing')">💻 ফ্রিল্যান্সিং</div>
     </div>
 
     <div class="free-wrap">
-        <div class="sec-title">ফ্রি কোর্সসমূহ</div>
+        <div class="sec-title">আমাদের ফ্রি কোর্সসমূহ</div>
         <div class="free-slider-box">
             <div class="free-slides" id="freeSlider">
+                
                 <div class="course-card">
-                    <img src="https://via.placeholder.com/640x360/f59e0b/fff?text=Graphic+Design">
+                    <img src="https://via.placeholder.com/640x360/f59e0b/fff?text=Graphic+Design+Free" alt="Banner">
                     <div class="course-body">
-                        <div><h3 style="font-size:16px;">বেসিক গ্রাফিক্স ডিজাইন</h3><p style="color:#2563eb;font-weight:bold;">৳ ০.০০</p></div>
-                        <a href="URL_HERE" class="enroll-btn">এনরোল</a>
+                        <div class="course-details"><h3>বেসিক গ্রাফিক্স</h3><p class="price">৳ ০.০০</p></div>
+                        <a href="#" class="enroll-btn">এনরোল</a>
                     </div>
                 </div>
+
                 <div class="course-card">
-                    <img src="https://via.placeholder.com/640x360/10b981/fff?text=Digital+Marketing">
+                    <img src="https://via.placeholder.com/640x360/10b981/fff?text=Marketing+Free" alt="Banner">
                     <div class="course-body">
-                        <div><h3 style="font-size:16px;">ডিজিটাল মার্কেটিং</h3><p style="color:#2563eb;font-weight:bold;">৳ ০.০০</p></div>
-                        <a href="URL_HERE" class="enroll-btn">এনরোল</a>
+                        <div class="course-details"><h3>ডিজিটাল মার্কেটিং</h3><p class="price">৳ ০.০০</p></div>
+                        <a href="#" class="enroll-btn">এনরোল</a>
                     </div>
                 </div>
+
+                <div class="course-card">
+                    <img src="https://via.placeholder.com/640x360/8b5cf6/fff?text=Video+Editing+Free" alt="Banner">
+                    <div class="course-body">
+                        <div class="course-details"><h3>ভিডিও এডিটিং</h3><p class="price">৳ ০.০০</p></div>
+                        <a href="#" class="enroll-btn">এনরোল</a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <img src="https://via.placeholder.com/640x360/3b82f6/fff?text=Ethical+Hacking+Free" alt="Banner">
+                    <div class="course-body">
+                        <div class="course-details"><h3>ইথিকেল হ্যাকিং</h3><p class="price">৳ ০.০০</p></div>
+                        <a href="#" class="enroll-btn">এনরোল</a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <img src="https://via.placeholder.com/640x360/ec4899/fff?text=Photoshop+Free" alt="Banner">
+                    <div class="course-body">
+                        <div class="course-details"><h3>ফটোশপ মাস্টার</h3><p class="price">৳ ০.০০</p></div>
+                        <a href="#" class="enroll-btn">এনরোল</a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        // স্লাইডার স্ক্রিপ্ট
-        let t = 0, f = 0;
-        setInterval(() => { t = (t + 1) % 3; document.getElementById('topSlider').style.transform = `translateX(-${t * 100}%)`; }, 4000);
-        setInterval(() => { f = (f + 1) % 2; document.getElementById('freeSlider').style.transform = `translateX(-${f * 100}%)`; }, 5000);
+        // টপ স্লাইডার কন্ট্রোল
+        let tIdx = 0;
+        setInterval(() => {
+            tIdx = (tIdx + 1) % 3;
+            document.getElementById('topSlider').style.transform = `translateX(-${tIdx * 100}%)`;
+        }, 4000);
 
+        // ফ্রি কোর্স স্লাইডার কন্ট্রোল (৫টি কার্ড)
+        let fIdx = 0;
+        setInterval(() => {
+            fIdx = (fIdx + 1) % 5;
+            document.getElementById('freeSlider').style.transform = `translateX(-${fIdx * 100}%)`;
+        }, 5000);
+
+        // নেভিগেশন
         function nav(c) { window.location.href = 'category-' + c + '.html'; }
 
-        // লগইন নিরাপত্তা চেক
+        // সিকিউরিটি চেক
         window.onload = function() {
-            if(!localStorage.getItem('userPhone')) { window.location.href = 'index.html'; }
-        }
+            if(!localStorage.getItem('userPhone')) location.replace('index.html');
+        };
     </script>
 </body>
 </html>
