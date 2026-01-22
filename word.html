@@ -1,1 +1,118 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কোর্স তালিকা | Course Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #f4f7fa; padding-bottom: 50px; }
+
+        /* হেডার (হোমপেজের মতো সেম টু সেম) */
+        header {
+            background: #ffffff;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-box {
+            width: 40px; height: 40px; background: #2563eb; color: white;
+            border-radius: 10px; display: flex; align-items: center;
+            justify-content: center; font-size: 22px; font-weight: bold;
+        }
+        .logo-text { font-size: 18px; font-weight: bold; color: #333; }
+        .back-icon { font-size: 20px; text-decoration: none; color: #2563eb; font-weight: bold; }
+
+        .container { padding: 15px; max-width: 600px; margin: auto; }
+        .page-header-title { 
+            font-size: 20px; font-weight: bold; color: #1e293b; 
+            margin: 20px 0; border-left: 5px solid #2563eb; padding-left: 10px; 
+        }
+
+        /* ১০টি কোর্স সেকশন ডিজাইন */
+        .course-section {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            margin-bottom: 30px; /* একটির নিচে একটি গ্যাপ */
+            border: 1px solid #eee;
+        }
+        .course-banner { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+        
+        .course-content { padding: 20px; text-align: left; }
+        .course-title { font-size: 19px; color: #1e293b; font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
+        
+        .course-footer { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: 15px; 
+            padding-top: 15px; 
+            border-top: 1px solid #f0f0f0; 
+        }
+        .course-price { font-size: 22px; font-weight: 800; color: #2563eb; }
+        
+        .enroll-btn { 
+            background: #2563eb; color: white; padding: 12px 25px; 
+            border-radius: 15px; text-decoration: none; font-weight: bold; 
+            font-size: 15px; transition: 0.3s; box-shadow: 0 4px 12px rgba(37,99,235,0.2);
+        }
+        .enroll-btn:active { transform: scale(0.95); background: #1e40af; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo-box">L</div>
+            <div class="logo-text">COURSE <span style="color:#2563eb">PRO</span></div>
+        </div>
+        <a href="home.html" class="back-icon">✕</a>
+    </header>
+
+    <div class="container">
+        <h2 class="page-header-title">কোর্স তালিকা</h2>
+
+        <div class="course-section">
+            <img src="https://via.placeholder.com/800x450/2563eb/fff?text=Course+Banner+1" class="course-banner" alt="Banner">
+            <div class="course-content">
+                <h3 class="course-title">১. প্রফেশনাল কোর্স টাইটেল এখানে লিখুন</h3>
+                <div class="course-footer">
+                    <span class="course-price">৳ ১০০০</span>
+                    <a href="payment.html?course=Course_1&price=1000" class="enroll-btn">এনরোল করুন</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-section">
+            <img src="https://via.placeholder.com/800x450/1e40af/fff?text=Course+Banner+2" class="course-banner" alt="Banner">
+            <div class="course-content">
+                <h3 class="course-title">২. আপনার দ্বিতীয় কোর্সের নাম এখানে হবে</h3>
+                <div class="course-footer">
+                    <span class="course-price">৳ ১২০০</span>
+                    <a href="payment.html?course=Course_2&price=1200" class="enroll-btn">এনরোল করুন</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-section">
+            <img src="https://via.placeholder.com/800x450/3b82f6/fff?text=Course+Banner+3" class="course-banner" alt="Banner">
+            <div class="course-content">
+                <h3 class="course-title">৩. তৃতীয় কোর্সের টাইটেল এখানে লিখুন</h3>
+                <div class="course-footer">
+                    <span class="course-price">৳ ১৫০০</span>
+                    <a href="payment.html?course=Course_3&price=1500" class="enroll-btn">এনরোল করুন</a>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+</body>
+</html>
 
