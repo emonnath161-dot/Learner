@@ -45,16 +45,16 @@
         /* ক্যাটাগরি মেনু (১০টি) */
         .cat-menu { display: flex; overflow-x: auto; padding: 15px; gap: 10px; scrollbar-width: none; }
         .cat-menu::-webkit-scrollbar { display: none; }
-        .cat-item { background: #fff; padding: 10px 20px; border-radius: 50px; border: 1.5px solid #2563eb; color: #2563eb; font-weight: bold; font-size: 14px; white-space: nowrap; cursor: pointer; }
+        .cat-item { background: #fff; padding: 10px 20px; border-radius: 50px; border: 1.5px solid #2563eb; color: #2563eb; font-weight: bold; font-size: 14px; white-space: nowrap; cursor: pointer; transition: 0.3s; }
+        .cat-item:active { background: #2563eb; color: white; }
 
-        /* ফ্রি কোর্স ৫টি স্লাইডার (ব্যানার, প্রাইস, বাটন সহ) */
+        /* ফ্রি কোর্স ৫টি স্লাইডার */
         .free-wrap { padding: 15px; }
         .sec-title { font-size: 19px; font-weight: bold; margin-bottom: 15px; border-left: 5px solid #2563eb; padding-left: 10px; }
         
         .free-slider-box { width: 100%; overflow: hidden; border-radius: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); background: white; }
         .free-slides { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         
-        /* প্রতিটি স্লাইড কার্ড */
         .course-card { min-width: 100%; background: #fff; display: flex; flex-direction: column; }
         .course-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
         
@@ -88,7 +88,7 @@
     </div>
 
     <div class="marquee">
-        <div class="marquee-inner">🔥 কোর্স প্রো-তে আপনাকে স্বাগতম! আমাদের ফ্রি কোর্সগুলোতে জয়েন করতে এনরোল বাটনে ক্লিক করুন।</div>
+        <div class="marquee-inner">🔥 কোর্স প্রো-তে আপনাকে স্বাগতম! আমাদের প্রিমিয়াম কোর্সগুলোতে জয়েন করতে সংশ্লিষ্ট ক্যাটাগরিতে ক্লিক করুন।</div>
     </div>
 
     <div class="cat-menu">
@@ -158,22 +158,29 @@
         let tIdx = 0;
         setInterval(() => {
             tIdx = (tIdx + 1) % 3;
-            document.getElementById('topSlider').style.transform = `translateX(-${tIdx * 100}%)`;
+            const slider = document.getElementById('topSlider');
+            if(slider) slider.style.transform = `translateX(-${tIdx * 100}%)`;
         }, 4000);
 
         // ফ্রি কোর্স স্লাইডার কন্ট্রোল (৫টি কার্ড)
         let fIdx = 0;
         setInterval(() => {
             fIdx = (fIdx + 1) % 5;
-            document.getElementById('freeSlider').style.transform = `translateX(-${fIdx * 100}%)`;
+            const slider = document.getElementById('freeSlider');
+            if(slider) slider.style.transform = `translateX(-${fIdx * 100}%)`;
         }, 5000);
 
-        // নেভিগেশন
-        function nav(c) { window.location.href = 'category-' + c + '.html'; }
+        // নেভিগেশন (আপনার তৈরি করা ১০টি আলাদা ফাইলের সাথে কানেক্ট করা)
+        function nav(c) { 
+            // এটি ক্যাটাগরি অনুযায়ী ফাইল লোড করবে, যেমন: graphics.html
+            window.location.href = c + '.html'; 
+        }
 
         // সিকিউরিটি চেক
         window.onload = function() {
-            if(!localStorage.getItem('userPhone')) location.replace('index.html');
+            if(!localStorage.getItem('userPhone')) {
+                location.replace('index.html');
+            }
         };
     </script>
 </body>
