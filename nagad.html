@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>নগদ পেমেন্ট | Course Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #fff7ed; padding-bottom: 40px; }
+
+        /* নগদের ব্র্যান্ড কালার (কমলা) */
+        .header { background: #f97316; color: white; padding: 15px; display: flex; align-items: center; gap: 15px; }
+        .back-btn { text-decoration: none; color: white; font-size: 20px; font-weight: bold; }
+
+        .container { padding: 20px; max-width: 500px; margin: auto; }
+
+        .nagad-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; border-top: 5px solid #f97316; }
+        .pay-amount { font-size: 30px; font-weight: 800; color: #f97316; margin: 10px 0; }
+
+        .instruction { text-align: left; background: #fffaf5; padding: 15px; border-radius: 12px; margin: 20px 0; font-size: 14px; line-height: 1.6; border: 1px dashed #f97316; }
+
+        .copy-box { background: #f1f5f9; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .copy-btn { background: #f97316; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; }
+
+        .input-group { text-align: left; margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #333; }
+        input { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid #ddd; font-size: 16px; outline: none; }
+        input:focus { border-color: #f97316; }
+        
+        .submit-btn { width: 100%; padding: 16px; background: #f97316; color: white; border: none; border-radius: 15px; font-size: 17px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .submit-btn:disabled { background: #ccc; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="payment.html" class="back-btn">←</a>
+        <span>নগদ পার্সোনাল</span>
+    </div>
+
+    <div class="container">
+        <div class="nagad-card">
+            <p>আপনাকে পেমেন্ট করতে হবে</p>
+            <div class="pay-amount" id="displayPrice">৳ ০.০০</div>
+
+            <div class="instruction">
+                <strong>ধাপসমূহ:</strong><br>
+                ১. নিচের নম্বরটি কপি করুন।<br>
+                ২. আপনার নগদ অ্যাপ বা USSD মেনু থেকে <strong>Send Money</strong> করুন।<br>
+                ৩. পেমেন্ট শেষে ট্রানজেকশন আইডি (TrxID) নিচে দিন।
+            </div>
+
+            <div class="copy-box">
+                <span id="myNum">01XXXXXXXXX</span> <button class="copy-btn" onclick="copyNum()">কপি নম্বর</button>
+            </div>
+
+            <div class="input-group">
+                <label>যে নম্বর থেকে টাকা পাঠিয়েছেন</label>
+                <input type="number" id="sender" placeholder="01XXXXXXXXX">
+            </div>
+            <div class="input-group">
+                <label>ট্রানজেকশন আইডি (TrxID)</label>
+                <input type="text" id="trx" placeholder="8N7K5M2P">
+            </div>
+
+            <button class="submit-btn" id="subBtn" onclick="sendData()">পেমেন্ট নিশ্চিত করুন</button>
+            <p id="msg" style="margin-top:15px; font-weight:bold;"></p>
+        </div>
+    </div>
+
+    <script>
+        // URL থেকে দাম এবং কোর্সের নাম রিসিভ করা
+        const params = new URLSearchParams(window.location.search);
+        const price = params.get('price') || '0';
+        const course = params.get('course') || 'Unknown';
+        document.getElementById('displayPrice').innerText = "৳ " + price;
+
+        // নম্বর কপি করার ফাংশন
+        function copyNum() {
+            const num = document.getElementById('myNum').innerText;
+            navigator.clipboard.writeText(num);
+            alert("নগদ নম্বর কপি হয়েছে!");
+        }
+
+        // গুগল শিটে ডাটা পাঠানোর ফাংশন
+        function sendData() {
+            const sender = document.getElementById('sender').value;
+            const trx = document.getElementById('trx').value;
+            const userPhone = localStorage.getItem('userPhone');
+            const btn = document.getElementById('subBtn');
+
+            if(!sender || !trx) {
+                alert("সবগুলো তথ্য সঠিকভাবে দিন!");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "প্রসেসিং হচ্ছে...";
+
+            // আপনার গুগল অ্যাপস স্ক্রিপ্ট লিঙ্ক এখানে দিন
+            const scriptURL = 'আপনার_গুগল_স্ক্রিপ্ট_ইউআরএল';
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({
+                    phone: userPhone,
+                    name: "Nagad: " + course,
+                    email: "From: " + sender + " | Trx: " + trx + " | Price: " + price
+                })
+            }).then(() => {
+                document.getElementById('msg').innerHTML = "✅ সফল হয়েছে! আমাদের টিম যাচাই করে ২৪ ঘণ্টার মধ্যে কোর্সটি আনলক করে দেবে।";
+                document.getElementById('msg').style.color = "green";
+                btn.innerText = "সফল";
+            }).catch(() => {
+                alert("দুঃখিত, কোনো সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+                btn.disabled = false;
+                btn.innerText = "পেমেন্ট নিশ্চিত করুন";
+            });
+        }
+    </script>
+</body>
+</html>
